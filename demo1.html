@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="./js/three.js"></script>
+    <script>
+        // 场景
+        const scene = new THREE.Scene();
+        // 透视摄像机 PerspectiveCamera(FOV, aspect, near, far)
+        const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.2, 1000);
+        // 渲染器
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // scene.set
+        document.body.appendChild(renderer.domElement);
+        // 几何体
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xff00ff
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        // 相机位置
+        camera.position.z = 3;
+
+        function animate() {
+            cube.rotation.y += 0.003
+                // cube.rotation.x += 0.003
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+
+</html>

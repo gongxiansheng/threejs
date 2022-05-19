@@ -28,14 +28,14 @@
         let camera
         let scene
         let light
-        let cube
+        let line
         let canvasEle
         function initThree() {
             canvasEle = document.getElementById('canvas')
             renderer = new THREE.WebGLRenderer({
                 antialias: true // 开启抗锯齿 占资源 影响性能在大量对象渲染时
             })
-            renderer.setSize(canvasEle.clientWidth, canvasEle.clientHeight) //(window.innerWidth , window.innerHeight)
+            renderer.setSize(canvasEle.clientWidth, canvasEle.clientHeight)
             canvasEle.appendChild(renderer.domElement)
             renderer.setClearColor(0xffffff, 1.0)
 
@@ -43,7 +43,7 @@
 
         function initCamera() {
             console.log(canvasEle.clientWidth / canvasEle.clientHeight)
-            camera = new THREE.PerspectiveCamera(50, canvasEle.clientWidth / canvasEle.clientHeight, 1, 1000)
+            camera = new THREE.PerspectiveCamera(50, canvasEle.clientWidth / canvasEle.clientHeight, 1, 10000)
             camera.position.set(0,0,5)
         }
 
@@ -52,23 +52,34 @@
         }
 
         function initLight() {
-            light = new THREE.DirectionalLight(0xffffff, 1.0, 0)
+            light = new THREE.DirectionalLight(0xff0000, 1.0, 0)
             light.position.set(-100, 100, 100)
             scene.add(light)
         }
 
         function initObject() {
-            const geometry = new THREE.BoxGeometry();
-            const material = new THREE.MeshLambertMaterial({
-                color: 0xff00ff
+            const geometry = new THREE.BufferGeometry();
+            const material = new THREE.LineBasicMaterial({
+                color: 0xff00ff,
+                vertexColors: true
             });
-            cube = new THREE.Mesh(geometry, material);
-            cube.position.set(2,1,0)
-            scene.add(cube);
+            const points = [];
+            points.push( new THREE.Vector3( -1, 0, 0 ) );
+            points.push( new THREE.Vector3( 0, 1, 0 ) );
+            points.push( new THREE.Vector3( 1, 0, 0 ) );
+            geometry.setFromPoints( points )
+
+            const color = []
+            color.push(new THREE.Color(0x444444))
+            color.push(new THREE.Color(0xff0000))
+            console.log(geometry)
+            // geometry.addAttribute('color', new THREE.Float32BufferAttribute(color, 1))
+            line = new THREE.Line(geometry, material);
+            scene.add(line);
         }
         function render() {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
+            // line.rotation.x += 0.01;
+            line.rotation.y += 0.01;
             renderer.render(scene, camera)
         }
         function animate() {

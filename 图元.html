@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+        #canvas {
+            height: 700px;
+            background-color: #ddd;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body onload="initCanvas()">
+    <script src="./js/three.js"></script>
+    <script>
+        let renderer
+        let camera
+        let scene
+        let light
+        let mesh
+        function initThree() {
+            renderer = new THREE.WebGLRenderer({
+                antialias: true // 开启抗锯齿 占资源 影响性能在大量对象渲染时
+            })
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            document.body.appendChild(renderer.domElement)
+            renderer.setClearColor(0xffffff, 1.0)
+
+        }
+
+        function initCamera() {
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000)
+            camera.position.set(0,0,50)
+        }
+
+        function initScene() {
+            scene = new THREE.Scene();
+        }
+
+        function initLight() {
+            light = new THREE.DirectionalLight(0x00ff00, 1.0, 0)
+            light.position.set(-100, 100, 100)
+            scene.add(light)
+        }
+
+        function initObject() {
+            const radius = 3.5;  // ui: radius
+            const tubeRadius = 1.5;  // ui: tubeRadius
+            const radialSegments = 8;  // ui: radialSegments
+            const tubularSegments = 64;  // ui: tubularSegments
+            const p = 2;  // ui: p
+            const q = 3;  // ui: q
+            const geometry = new THREE.TorusKnotGeometry(radius, tubeRadius, tubularSegments, radialSegments, p, q);
+            // const geometry = new THREE.PlaneGeometry(1,10);
+            const material = new THREE.MeshLambertMaterial({
+                color: 0xff00ff,
+            });
+            mesh = new THREE.Mesh(geometry, material);
+            // mesh.position.set(2,1,0)
+            scene.add(mesh);
+        }
+        function render() {
+            // line.rotation.x += 0.01;
+            // mesh.rotation.y += 0.01;
+            renderer.render(scene, camera)
+        }
+        function animate() {
+            requestAnimationFrame(animate)
+            render()
+        }
+        function initCanvas() {
+            initThree()
+            initScene()
+            initCamera()
+            initLight()
+            initObject()
+            animate()
+        }
+    </script>
+</body>
+
+</html>

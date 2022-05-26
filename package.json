@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "pixi.js": "^6.3.2",
     "three": "^0.137.5"
+  },
+  "devDependencies": {
+    "glslify-bundle": "^5.1.1"
   }
 }
